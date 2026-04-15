@@ -64,6 +64,7 @@ if __name__ == '__main__':
     # Srednia dlugosc slowa: 4.11
 
     #Generator Markova piatego rzedu
+    input_text = "probability " + input_text
     generator_markova(input_text, size, outputfile, 5)
     # Srednia dlugosc slowa: 4.11
 
