@@ -40,7 +40,7 @@ def generator_markova(input_text, size, outputfile, order):
         #Jezeli w tekscie nie istnial aktualny ciag, losuje nowy z tekstu
         else:
             random_index = random.randint(0, inputlength - order)
-            current_words = tuple(words[random_index: random_index + order])
+            current_words = tuple(words[random_index : random_index + order])
             text.extend(list(current_words))
 
     #Zapis do pliku wyjsciowego
