@@ -14,8 +14,25 @@ def entropia_znakow(input_text):
         probs[char] = chars[char] / inputlength
 
     entropy = 0
-    for prob in probs:
-        entropy += -1 * probs[prob] * math.log(probs[prob], 2)
+    for prob in probs.values():
+        entropy += -1 * prob * math.log(prob, 2)
+
+    return entropy
+
+def entropia_slow(input_text):
+    words = defaultdict(int)
+    input_words = input_text.split()
+    for word in input_words:
+        words[word] += 1
+
+    probs = {}
+    inputlength = len(input_words)
+    for word in words:
+        probs[word] = words[word] / inputlength
+
+    entropy = 0
+    for prob in probs.values():
+        entropy += -1 * prob * math.log(prob, 2)
 
     return entropy
 
@@ -24,5 +41,5 @@ def entropia_znakow(input_text):
 if __name__ == '__main__':
     input_file = sys.argv[1]
     input_text = open(input_file, "r").read()
-    print(entropia_znakow(input_text))
+    print(entropia_slow(input_text))
 
