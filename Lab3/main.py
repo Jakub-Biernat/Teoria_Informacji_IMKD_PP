@@ -116,8 +116,40 @@ def entropia_slow_warunkowa(input_text, order):
 
     return entropy
 
+def test_entropies(text):
+    entropies = {}
+
+    entropies["H_char"] = entropia_znakow(text)
+    entropies["H_word"] = entropia_slow(text)
+
+    for order in range(1, 6):
+        entropies[f"H_char_cond{order}"] = entropia_slow_warunkowa(text, order)
+        entropies[f"H_word_cond{order}"] = entropia_slow_warunkowa(text, order)
+
+    return entropies
+
+
+
 if __name__ == '__main__':
-    input_file = sys.argv[1]
-    input_text = open(input_file, "r").read()
-    print(entropia_slow_warunkowa(input_text, 1))
+    #input_file = sys.argv[1]
+    #input_text = open(input_file, "r").read()
+
+    lang_samp_files = [
+        "norm_wiki_en_txt",
+        "norm_wiki_eo_txt",
+        "norm_wiki_et_txt",
+        "norm_wiki_ht_txt",
+        "norm_wiki_la_txt",
+        "norm_wiki_nv_txt",
+        "norm_wiki_so_txt"
+    ]
+
+    test_samp_files = [
+        "sample0.txt",
+        "sample1.txt",
+        "sample2.txt",
+        "sample3.txt",
+        "sample4.txt",
+        "sample5.txt",
+    ]
 
