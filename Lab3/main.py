@@ -1,5 +1,4 @@
 import math
-import random
 import sys
 from collections import defaultdict
 
@@ -61,13 +60,64 @@ def entropia_znakow_warunkowa(input_text, order):
             next_char: count / total
             for next_char, count in n_grams[first_chars].items()
         }
-    print(n_grams_probs)
-    print(joint_probs)
 
+    entropy = 0
+    for n_gram, joint_prob in joint_probs.items():
+        current_chars = n_gram[:-1]
+        next_char = n_gram[-1]
 
+        cond_prob = n_grams_probs[current_chars][next_char]
+
+        entropy += -1 * joint_prob * math.log(cond_prob, 2)
+
+    return entropy
+
+def entropia_slow_warunkowa(input_text, order):
+    words = input_text.split()
+    inputlength = len(words)
+
+    # Slownik n-gramow bez zliczania, do pradopodobienstwa lacznego
+    joint_n_grams = defaultdict(int)
+    # Slownik n-gramow, zliczanie ile razy po danym ciagu slow wystepuje inne slowo
+    n_grams = defaultdict(lambda: defaultdict(int))
+
+    for i in range(inputlength - order):
+        current_words = tuple(words[i : i + order])
+        next_word = words[i + order]
+
+        joint_n_grams[tuple(words[i : i + order + 1])] += 1
+        n_grams[current_words][next_word] += 1
+
+    print(n_grams)
+
+    # prawdopodobiesstwo laczne
+    joint_probs = {}
+    total_joint_n_grams = sum(joint_n_grams.values())
+    for n_gram in joint_n_grams:
+        joint_probs[n_gram] = joint_n_grams[n_gram] / total_joint_n_grams
+
+    #Rozklad prawdopodobienstwa wystapienia kolejnego slowa dla kazdego n-gramu
+    n_grams_probs = {}
+    for current_words in n_grams:
+        total = sum(n_grams[current_words].values())
+        n_grams_probs[current_words] = {
+            word: count / total
+            for word, count in n_grams[current_words].items()
+        }
+
+    entropy = 0
+    for n_gram, joint_prob in joint_probs.items():
+        current_words = n_gram[:-1]
+        next_words = n_gram[-1]
+
+        cond_prob = n_grams_probs[current_words][next_words]
+
+        entropy += -1 * joint_prob * math.log2(cond_prob)
+
+    return entropy
 
 if __name__ == '__main__':
     input_file = sys.argv[1]
     input_text = open(input_file, "r").read()
-    print(entropia_znakow_warunkowa(input_text, 1))
+    print(entropia_slow_warunkowa(input_text, 1))
 
