@@ -125,92 +125,31 @@ def test_entropies(text):
 
     entropies["H_char"] = entropia_znakow(text)
 
-    for order in range(1, 3):
+    for order in range(1, 6):
         entropies[f"H_char_cond{order}"] = entropia_znakow_warunkowa(text, order)
 
     entropies["H_word"] = entropia_slow(text)
 
-    for order in range(1, 3):
+    for order in range(1, 6):
         entropies[f"H_word_cond{order}"] = entropia_slow_warunkowa(text, order)
 
     return entropies
 
-def show_results(lang_samp_files, test_samp_files):
-    results_lang = {}
-    for file in lang_samp_files:
-        text = open(file, "r").read()
-        text = text[:1000]
-        results_lang[file] = test_entropies(text)
+def print_entropies(file):
+    text = open(file, "r").read()
+    text = text[:10000]
+    results = test_entropies(text)
+    for entropy_name, entropy_value in results.items():
+        print(f"{entropy_name}: {entropy_value}")
 
-    print(results_lang)
-
-    results_test = {}
-    for file in test_samp_files:
-        text = open(file, "r").read()
-        text = text[:1000]
-        results_test[file] = test_entropies(text)
-
-    # ===== WYKRESY =====
-    num_lang = len(results_lang)
-    num_test = len(results_test)
-    max_cols = max(num_lang, num_test)
-
-    fig, axes = plt.subplots(2, max_cols, figsize=(4 * max_cols, 10))
-
-    # Jeśli tylko 1 kolumna, matplotlib daje 1D tablicę
-    if max_cols == 1:
-        axes = np.array([[axes[0]], [axes[1]]])
-
-    # --- WYKRESY LANG (góra) ---
-    for i, (file, entropies) in enumerate(results_lang.items()):
-        ax = axes[0, i]
-        labels = list(entropies.keys())
-        values = list(entropies.values())
-
-        ax.bar(labels, values)
-        ax.set_title(f"Lang: {file}")
-        ax.tick_params(axis='x', rotation=45)
-
-    # --- WYKRESY TEST (dół) ---
-    for i, (file, entropies) in enumerate(results_test.items()):
-        ax = axes[1, i]
-        labels = list(entropies.keys())
-        values = list(entropies.values())
-
-        ax.bar(labels, values)
-        ax.set_title(f"Test: {file}")
-        ax.tick_params(axis='x', rotation=45)
-
-    # Wyłącz puste subploty (jeśli liczby się różnią)
-    for i in range(num_lang, max_cols):
-        axes[0, i].axis("off")
-    for i in range(num_test, max_cols):
-        axes[1, i].axis("off")
-
-    plt.tight_layout()
-    plt.show()
-
+    print()
 
 if __name__ == '__main__':
-    #input_file = sys.argv[1]
-    #input_text = open(input_file, "r").read()
-    #print(entropia_znakow_warunkowa(input_text[:1000], 1))
-
     chars = string.ascii_lowercase + string.digits + " "
     random_text = "".join(random.choice(chars) for _ in range(2000))
 
     with open("test.txt", "w") as test_file:
         test_file.write(random_text)
-
-    lang_samp_files = [
-        "norm_wiki_en.txt",
-        "norm_wiki_eo.txt",
-        "norm_wiki_et.txt",
-        "norm_wiki_ht.txt",
-        "norm_wiki_la.txt",
-        "norm_wiki_nv.txt",
-        "norm_wiki_so.txt"
-    ]
 
     test_samp_files = [
         "sample0.txt",
@@ -222,5 +161,19 @@ if __name__ == '__main__':
         "test.txt" #dla sprawdzenia dla na pewno nie naturalnego jezyka
     ]
 
-    show_results(lang_samp_files, test_samp_files)
+    #norm_wiki_en
+    print("Test entropii dla pliku norm_wiki_en.txt")
+    print_entropies("norm_wiki_en.txt")
+
+    #norm_wiki_en
+    print("Test entropii dla pliku norm_wiki_la.txt")
+    print_entropies("norm_wiki_la.txt")
+
+    #samples
+    for file in test_samp_files:
+        print(f"Test entropii dla pliku {file}")
+        print_entropies(file)
+
+    #sample4 oraz sample5 nie są językami naturalnymi
+
 
