@@ -1,5 +1,4 @@
 from sys import argv
-
 from bitarray import bitarray
 import json
 import math
@@ -55,8 +54,6 @@ def load(filename):
     codebook = data["codebook"]
     encoded = bitarray(data["encoded"])
 
-    L = len(next(iter(codebook.values())))
-
     return codebook, encoded
 
 def verify(original, decoded):
@@ -66,4 +63,25 @@ if __name__ == '__main__':
     text = open(argv[1], "r").read()
     freq = Counter(text)
 
-    #Test
+    codebook_1 = create(freq)
+    encoded_bits_1 = encode(text, codebook_1)
+    save(argv[2], codebook_1, encoded_bits_1)
+
+    codebook_2, encoded_bits_2 = load(argv[2])
+    decoded = decode(encoded_bits_2, codebook_2)
+
+    if verify(text, decoded):
+        print("Kompresja przeprowadzona pomyslnie")
+    else:
+        print("Niepowodzenie")
+
+    original_size = len(text) * 8
+    compressed_size = len(encoded_bits_1)
+
+    print(f"\nOryginalny rozmiar: {original_size} bitów")
+    print(f"Rozmiar po kompresji: {compressed_size} bitów")
+
+    ratio = compressed_size / original_size
+
+    print(f"Stopień kompresji: {ratio:.2f}")
+    print(f"Oszczędność: {(1 - ratio) * 100:.2f}%")
