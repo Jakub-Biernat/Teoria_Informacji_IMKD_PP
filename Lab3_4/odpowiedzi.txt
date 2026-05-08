@@ -1,0 +1,6 @@
+sample0 - nie jest językiem naturalnym
+sample1 - jest językiem naturalnym
+sample2 - nie jest językiem naturalnym
+sample3 - jest językiem naturalnym
+sample4 - nie jest językiem naturalnym
+sample5 - nie jest językiem naturalnym
