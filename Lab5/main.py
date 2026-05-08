@@ -60,6 +60,7 @@ def verify(original, decoded):
     return original == decoded
 
 if __name__ == '__main__':
+    #Run: py .\main.py textToCompress.txt compressed.json
     text = open(argv[1], "r").read()
     freq = Counter(text)
 
