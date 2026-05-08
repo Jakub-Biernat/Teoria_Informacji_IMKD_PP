@@ -1,12 +1,7 @@
 import math
 import random
 import string
-import sys
 from collections import defaultdict
-
-import numpy as np
-from matplotlib import pyplot as plt
-
 
 def entropia_znakow(input_text):
     chars = defaultdict(int)
@@ -174,6 +169,6 @@ if __name__ == '__main__':
         print(f"Test entropii dla pliku {file}")
         print_entropies(file)
 
-    #sample4 oraz sample5 nie są językami naturalnymi
+    #sample1 oraz sample3 są językami naturalnymi
 
 
