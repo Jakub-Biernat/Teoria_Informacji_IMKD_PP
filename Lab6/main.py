@@ -1,8 +1,8 @@
+import math
 from sys import argv
 from bitarray import bitarray
 import json
-import math
-from collections import Counter
+from collections import Counter, defaultdict
 import heapq
 
 class Node:
@@ -89,6 +89,34 @@ def load(filename):
 def verify(original, decoded):
     return original == decoded
 
+def average_codeword_length(codebook, frequencies):
+    total = sum(frequencies.values())
+
+    L = 0
+    for symbol in frequencies:
+        prob = frequencies[symbol] / total
+        length = len(codebook[symbol])
+        L += prob * length
+
+    return L
+
+def symbol_entropy(input_text):
+    chars = defaultdict(int)
+    for char in input_text:
+        chars[char] += 1
+
+    probs = {}
+    inputlength = len(input_text)
+    for char in chars:
+        probs[char] = chars[char] / inputlength
+
+    entropy = 0
+    for prob in probs.values():
+        entropy += -1 * prob * math.log(prob, 2)
+
+    return entropy
+
+
 if __name__ == '__main__':
     #Run: py .\main.py textToCompress.txt compressed.json
     text = open(argv[1], "r").read()
@@ -116,3 +144,11 @@ if __name__ == '__main__':
 
     print(f"Stopień kompresji: {ratio:.2f}")
     print(f"Oszczędność: {(1 - ratio) * 100:.2f}%")
+
+    L = average_codeword_length(codebook_1, freq)
+    print(f"Średnia długość słów kodowych: {L:.2f}")
+
+    H = symbol_entropy(text)
+    Eff = H / L
+    print(f"Efektywność kodowania: {Eff:.2f}")
+
