@@ -36,7 +36,6 @@ def decode(data, max_dict_size=None):
     old = data[0]
     result = bytearray(reverse_codebook[old])
     c = b""
-    #c = reverse_codebook[old][:1]
 
     for new in data[1:]:
         if new in reverse_codebook:
