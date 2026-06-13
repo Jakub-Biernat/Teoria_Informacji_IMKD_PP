@@ -45,26 +45,41 @@ def generator_markova(input_text, size, outputfile, order):
     with open(outputfile, "w") as f:
         f.write(text)
 
+    return text
+
+def average_word_length(text):
+    words = text.split()
+    if not words:
+        return 0
+    return sum(len(word) for word in words) / len(words)
+
 if __name__ == '__main__':
     inputfile = sys.argv[1]
     input_text = open(inputfile, "r").read()
     size = int(sys.argv[2])
     outputfile = sys.argv[3]
 
-    #Testy na norm_hamlet.txt, dlugosc tekstu wyjsciowego 1000 znakow
+    #Testy na norm_hamlet.txt, dlugosc tekstu wyjsciowego 10000 znakow
+    print(average_word_length(input_text))
     #Srednia dlugosc slowa: 3.98
 
     #Generator Markova pierwszego rzedu
-    #generator_markova(input_text, size, outputfile, 1)
+    output_text = generator_markova(input_text, size, outputfile, 1)
+    print(output_text[:100])
+    print(average_word_length(output_text))
     #Srednia dlugosc slowa: 3.98
 
 
     #Generator Markova trzeciego rzedu
-    #generator_markova(input_text, size, outputfile, 3)
+    #output_text = generator_markova(input_text, size, outputfile, 3)
+    #print(output_text[:100])
+    #print(average_word_length(output_text))
     # Srednia dlugosc slowa: 4.11
 
     #Generator Markova piatego rzedu
-    input_text = "probability " + input_text
-    generator_markova(input_text, size, outputfile, 5)
+    #input_text = "probability" + input_text
+    #output_text = generator_markova(input_text, size, outputfile, 5)
+    #print(output_text[:100])
+    #print(average_word_length(output_text))
     # Srednia dlugosc slowa: 4.11
 
