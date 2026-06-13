@@ -48,19 +48,37 @@ def generator_markova(input_text, size, outputfile, order):
     with open(outputfile, "w") as f:
         f.write(text)
 
+    return text
+
+def average_word_length(text):
+    words = text.split()
+    if not words:
+        return 0
+    return sum(len(word) for word in words) / len(words)
+
 if __name__ == '__main__':
     inputfile = sys.argv[1]
     input_text = open(inputfile, "r").read()
     size = int(sys.argv[2])
     outputfile = sys.argv[3]
+    #print(average_word_length(input_text))
 
     #Generator Markova pierwszego rzedu
-    #generator_markova(input_text, size, outputfile, 1)
+    output_text = generator_markova(input_text, size, outputfile, 1)
+    output_words = output_text.split()
+    print(" ".join(output_words[:30]))
+    print(average_word_length(output_text))
 
     #Generator Markova drugiego rzedu
-    #generator_markova(input_text, size, outputfile, 2)
+    # output_text = generator_markova(input_text, size, outputfile, 2)
+    # output_words = output_text.split()
+    # print(" ".join(output_words[:30]))
+    # print(average_word_length(output_text))
 
     #Generator Markova drugiego rzedu, input zaczyna sie na probability
-    input_text = "probability " + input_text
-    generator_markova(input_text, size, outputfile, 2)
+    #input_text = "probability " + input_text
+    # output_text = generator_markova(input_text, size, outputfile, 2)
+    # output_words = output_text.split()
+    # print(" ".join(output_words[:30]))
+    # print(average_word_length(output_text))
 
