@@ -119,7 +119,7 @@ def test_LZW(filename, max_dict_size=None):
     original_size = os.path.getsize(filename) * 8
     compressed_size = os.path.getsize(compressed_file) * 8
 
-    ratio = compressed_size / original_size if original_size else 0
+    ratio = compressed_size / original_size
 
     if max_dict_size is None:
         print("Limit słownika: brak")
